@@ -1,0 +1,21 @@
+{
+  "name": "office-queue-server",
+  "version": "1.0.0",
+  "description": "backend of the office queue application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "dev": "./node_modules/typescript/bin/tsc --watch | nodemon ./dist/main.js"
+  },
+  "author": "Umberto Fontanazza",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  }
+}

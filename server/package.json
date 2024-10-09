@@ -12,6 +12,7 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.13",
+    "@types/pg": "^8.11.10",
     "nodemon": "^3.1.7",
     "typescript": "^5.6.2"
   },
@@ -19,6 +20,7 @@
     "@jest/globals": "^29.7.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "http-status-codes": "^2.3.0"
+    "http-status-codes": "^2.3.0",
+    "pg": "^8.13.0"
   }
 }

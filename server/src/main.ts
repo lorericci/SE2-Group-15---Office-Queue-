@@ -1,8 +1,11 @@
 import express from "express"
 import { Configuration } from "./configuration";
 import { StatusCodes } from "http-status-codes"
+import dotenv from 'dotenv'
 
-const PORT: number = 3000; //TODO: move to .env file
+dotenv.config()
+
+const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
 const app = express();
 
 app.use(express.json())

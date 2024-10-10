@@ -7,7 +7,8 @@ GET /service/all - get all the services in the daily configuration
     Response body: { services: string[] }
     Response status: OK, //TODO: others
 
-POST /next - call a customer to a desk. Update the display with the tickets being served accordingly.
+//TODO: rename counters to desks
+POST /next-customer - call a customer to a desk. Update the display with the tickets being served accordingly.
     Request body: { deskId: number }
     Response body: { ticketId: number }
     Response status: OK, //TODO: others
@@ -21,8 +22,9 @@ POST /service - configure a service
     Request body: { serviceName: string, estimatedTime: number (duration in seconds)}
     Response status: CREATED
 
-POST /desk - add a service to a desk
-    Request body: { deskId: number, serviceName: string }
+//TODO: rename counter to desk, what if only some of the services exists? Is a partial assignment made?
+POST /assign-counter - add a service to a desk
+    Request body: { deskId: number, serviceNames: string[] }
     Response body: BAD_REQUEST, OK
 
 GET /stats/{daily, weekly, monthly}

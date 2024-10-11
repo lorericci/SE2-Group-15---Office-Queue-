@@ -1,33 +1,31 @@
 POST /ticket - ask the server to issue a ticket for the requested service
     Request body: { serviceName: string }
-    Response body: { ticketId: number, expectedWaitingTime: number }
+    Response body: { ticketId: number, //TODO: expectedWaitingTime: number }
     Response status: OK, //TODO: specify others
     
-GET /service/all - get all the services in the daily configuration
+GET /service/all - get all the services in the daily configuration that are assigned to at least one counter
     Response body: { services: string[] }
     Response status: OK, //TODO: others
 
-//TODO: rename counters to desks
-POST /next-customer - call a customer to a desk. Update the display with the tickets being served accordingly.
-    Request body: { deskId: number }
+POST /next-customer - call a customer to a counter. Update the display with the tickets being served accordingly.
+    Request body: { counterId: number }
     Response body: { ticketId: number }
     Response status: OK, //TODO: others
 
-POST /served - mark the ticket assigned to the current desk as served, update stats in the db
-    Request body: { deskId: number }
+POST /served - mark the ticket assigned to the current counter as served, update stats in the db
+    Request body: { counterId: number }
     Response body: No
-    Response status: OK, BAD_REQUEST = the desk wasn't previously assigned a ticket to serve calling POST /next
+    Response status: OK, BAD_REQUEST = the counter wasn't previously assigned a ticket to serve calling POST /next
 
 POST /service - configure a service
     Request body: { serviceName: string, estimatedTime: number (duration in seconds)}
     Response status: CREATED
 
-//TODO: rename counter to desk, what if only some of the services exists? Is a partial assignment made?
-POST /assign-counter - add a service to a desk
-    Request body: { deskId: number, serviceNames: string[] }
+POST /assign-counter - add a service to a counter if one service doesn't exist None is assigned
+    Request body: { counterId: number, serviceNames: string[] }
     Response body: BAD_REQUEST, OK
 
-GET /stats/{daily, weekly, monthly}
+GET /stats/(query parameter){daily, weekly, monthly}
     Response body: { stats: counterStats[] } where counterStats is an obj like
         {
             service1: 3,

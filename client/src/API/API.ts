@@ -1,16 +1,22 @@
 //import { Ticket } from "../models/ticket";
 
 
-const baseURL = "http://localhost:3000/ticket/"
+const baseURL = "http://localhost:3000"
 
 /********   GET TICKET   *********/
 
 async function getTicket(serviceName: string) {
-    const response = await fetch(baseURL + `get-ticket/${serviceName}`)
+    const response = await fetch(baseURL + `/ticket/${serviceName}`, {
+        method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ serviceName: serviceName }),
+    })
     if (response.ok) {
-        const ticket = await response.json()
+        const ticketId: number = await response.json()
         // const ticket = {ticketId: 3, estimatedTime: 10};
-        return ticket;
+        return ticketId;
     } else {
         const errDetail = await response.json();
         if (errDetail.error)
@@ -25,7 +31,7 @@ async function getTicket(serviceName: string) {
 
 async function nextCustomer(counterId: number) {
     try {
-        const response = await fetch(baseURL + `next-cutomer`, {
+        const response = await fetch(baseURL + `/next-cutomer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

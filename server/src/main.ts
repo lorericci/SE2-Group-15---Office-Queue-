@@ -1,4 +1,6 @@
 import express from "express"
+import morgan from "morgan"
+import cors from 'cors';
 import { Configuration } from "./configuration";
 import { StatusCodes } from "http-status-codes";
 import { Database } from "./database";
@@ -9,7 +11,18 @@ dotenv.config()
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
 const app = express();
 
+// Middlewares
+
 app.use(express.json())
+
+app.use(morgan('dev'));
+
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 202,
+    credentials: true
+};
+app.use(cors(corsOptions));
 
 // Routes
 

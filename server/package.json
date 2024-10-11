@@ -10,17 +10,21 @@
   "author": "Umberto Fontanazza",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.13",
+    "@types/morgan": "^1.9.9",
     "@types/pg": "^8.11.10",
     "nodemon": "^3.1.7",
     "typescript": "^5.6.2"
   },
   "dependencies": {
     "@jest/globals": "^29.7.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "http-status-codes": "^2.3.0",
+    "morgan": "^1.10.0",
     "postgres": "^3.4.4"
   }
 }

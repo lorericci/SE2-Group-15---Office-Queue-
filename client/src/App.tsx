@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import { GetTicketComp } from './components/getTicketComps/getTicketComp.tsx'
+import { GetTicketComp } from './components/customer-screen/getTicketComp.tsx'
 
 function App() {
 

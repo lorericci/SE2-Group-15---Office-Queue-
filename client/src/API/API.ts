@@ -26,16 +26,16 @@ async function getTicket(serviceName: string) {
 async function nextCustomer(counterId: number) {
     try {
         const response = await fetch(baseURL + `next-cutomer`, {
-            method: 'PATCH',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ counterId: counterId }),
         });
 
-        await response.json();
+        const data = await response.json();
         if (response.ok) {
-            return true;
+            return data.ticketId;
         } else {
             console.error('Errore durante l\'aggiornamento:');
             return false;

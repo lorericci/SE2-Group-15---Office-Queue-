@@ -1,14 +1,27 @@
 import { Button, Container, Spinner, Alert } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import API from '../../API/API.ts'; 
 
 
 export function GetTicketComp() {
     const [phase, setPhase] = useState<number>(0);
+    const [services, setServices] = useState<string[]>([]);
     const [ticketId, setTicketId] = useState<number | null>(null);
     const [showQR, setShowQR] = useState<boolean>(false);
     const [error, setError] = useState<string | null>('');
+
+    useEffect(() => {
+        const getServices = async () => {
+            try {
+                const services = await API.getServices();
+                setServices(services);
+            } catch (err: any) {
+                setError(err.message || 'An error occurred while getting the services');
+            }
+        };
+        getServices();
+    }, []);
 
     const handleGetTicket = async (service: string) => {
         try {
@@ -28,7 +41,7 @@ export function GetTicketComp() {
             <Container className="d-flex flex-column justify-content-start align-items-center" style={{ height: '100vh', paddingTop: '20px' }}>
                 <h1>Select a service</h1>
                 <div className="d-flex justify-content-center mb-4"> 
-                    {['Shipping', 'Service 2', 'Service 3', 'Service 4'].map(service => (
+                    {services.map(service => (
                         <Button
                             key={service}
                             variant="primary"

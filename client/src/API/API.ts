@@ -14,9 +14,9 @@ async function getTicket(serviceName: string) {
             body: JSON.stringify({ serviceName: serviceName }),
     })
     if (response.ok) {
-        const ticketId: number = await response.json()
-        // const ticket = {ticketId: 3, estimatedTime: 10};
-        return ticketId;
+        const ticketId: { ticketId: number } = await response.json();
+         // const ticket = {ticketId: 3, estimatedTime: 10};
+        return ticketId.ticketId;
     } else {
         const errDetail = await response.json();
         if (errDetail.error)
@@ -29,9 +29,27 @@ async function getTicket(serviceName: string) {
 }
 
 
+async function getServices() {
+    const response = await fetch(baseURL + `/service/all`);
+    if (response.ok) {
+        const services: { services: string[] } = await response.json();
+        return services.services;
+    } else {
+        const errDetail = await response.json();
+        if (errDetail.error)
+            throw errDetail.error
+        if (errDetail.message)
+            throw errDetail.message
+        throw new Error("Error in getting services")
+    }
+}
+
+
+/********   NEXT CUSTOMER   *********/
+
 async function nextCustomer(counterId: number) {
     try {
-        const response = await fetch(baseURL + `/next-cutomer`, {
+        const response = await fetch(baseURL + `/next-customer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,18 +61,18 @@ async function nextCustomer(counterId: number) {
         if (response.ok) {
             return data.ticketId;
         } else {
-            console.error('Errore durante l\'aggiornamento:');
+            console.error('Error during the update');
             return false;
         }
     } catch (error) {
-        console.error('Errore di rete:', error);
+        console.error('Network error: ', error);
         return false;
     }
 
 }
 
 const API = {
-    getTicket, nextCustomer
+    getTicket, nextCustomer, getServices
 }
 
 export default API

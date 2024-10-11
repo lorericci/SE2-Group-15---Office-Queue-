@@ -1,12 +1,9 @@
 import express from "express"
 import { Configuration } from "./configuration";
 import { StatusCodes } from "http-status-codes";
-import ServiceDAO from "./db/dao/serviceDao";
 
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
 const app = express();
-
-const serviceDAO = new ServiceDAO();
 
 app.use(express.json())
 
@@ -43,5 +40,3 @@ app.post('/next-customer', function (request, response) {
 app.listen(PORT, () => {
     console.log(`[server]: Server is running solid and fast at http://localhost:${PORT}`);
 });
-
-serviceDAO.insertService('pagamento_bollette', 10)

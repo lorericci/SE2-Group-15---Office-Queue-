@@ -22,8 +22,33 @@ async function getTicket(serviceName: string) {
 
 }
 
+
+async function nextCustomer(counterId: number) {
+    try {
+        const response = await fetch(baseURL + `next-cutomer`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ counterId: counterId }),
+        });
+
+        await response.json();
+        if (response.ok) {
+            return true;
+        } else {
+            console.error('Errore durante l\'aggiornamento:');
+            return false;
+        }
+    } catch (error) {
+        console.error('Errore di rete:', error);
+        return false;
+    }
+
+}
+
 const API = {
-    getTicket
+    getTicket, nextCustomer
 }
 
 export default API

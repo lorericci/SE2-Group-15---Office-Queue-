@@ -1,16 +1,15 @@
 import { Queue } from "./queue";
 import { Service } from "./service";
+import { Database } from "./database";
 
 export class Configuration { // Implements the Singleton pattern
     private static _instance: Configuration | null = null;
     private queues: Map<string, Queue> // Map<service name, respective queue>
     private counters: Map<number, string[]>; // Map<counter id, list of service names>
-    private ticketId: number
 
     private constructor() {
         this.queues = new Map<string, Queue>()
         this.counters = new Map<number, string[]>()
-        this.ticketId = 1
     }
 
     public static get instance(): Configuration {
@@ -45,13 +44,12 @@ export class Configuration { // Implements the Singleton pattern
      * @param serviceName - type of service requested
      * @returns the id of the issued ticket
      */
-    public static issueTicket(serviceName: string): number {
+    public static async issueTicket(serviceName: string): Promise<number> {
         const queue: Queue | undefined = Configuration.instance.queues.get(serviceName)
         if (!queue) { throw new Error(`Queue for service ${serviceName} not configured`) }
-        Configuration.instance.ticketId++
-        const issuedTicketId = Configuration.instance.ticketId
-        queue.enqueue(issuedTicketId)
-        return issuedTicketId
+        const ticketId = await Database.issueTicket(serviceName)
+        queue.enqueue(ticketId)
+        return ticketId
     }
 
     /**
@@ -85,7 +83,7 @@ export class Configuration { // Implements the Singleton pattern
         let selectedQueue: Queue | undefined;
         for (const service of services) {
             const queue = config.queues.get(service);
-            if (queue && (!selectedQueue || queue.length > selectedQueue.length || 
+            if (queue && (!selectedQueue || queue.length > selectedQueue.length ||
                 (queue.length === selectedQueue.length && queue.service.expectedDuration < selectedQueue.service.expectedDuration))) {
                 selectedQueue = queue;
             }
@@ -98,5 +96,5 @@ export class Configuration { // Implements the Singleton pattern
 
         return undefined;
     }
-    
+
 }

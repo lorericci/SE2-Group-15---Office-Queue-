@@ -1,9 +1,8 @@
-import express from "express"
+import express, { Request, Response, NextFunction } from "express"
 import morgan from "morgan"
 import cors from 'cors';
 import { Configuration } from "./configuration";
 import { StatusCodes } from "http-status-codes";
-import { Database } from "./database";
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -32,9 +31,10 @@ app.post('/assign-counter', function (request, response) {
     response.status(StatusCodes.OK).send({ message: `Counter ${counterId} assigned to services: ${serviceNames.join(", ")}` });
 });
 
-app.post('/ticket', function (request, response) {
-    const { serviceName }: { serviceName: string } = request.body;
-    const ticketId: number = Configuration.issueTicket(serviceName)
+app.post('/ticket', async function (request: Request, response: Response, _: NextFunction) {
+    const { serviceName }: { serviceName: string | undefined } = request.body;
+    if (!serviceName) response.status(StatusCodes.BAD_REQUEST).send({ error: "Missing serviceName field" })
+    const ticketId: number = await Configuration.issueTicket(serviceName || '')
     response.status(StatusCodes.OK).send({ ticketId: ticketId })
 });
 

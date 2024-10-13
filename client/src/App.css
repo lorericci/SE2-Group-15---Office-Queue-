@@ -1,0 +1,9 @@
+.services-container {
+    height: 100vh;
+    width: 100% !important;
+}
+
+.service-button {
+    width: 45% !important;
+    height: 100px;
+}

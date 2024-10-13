@@ -1,5 +1,7 @@
 //import { Ticket } from "../models/ticket";
 
+import Service from "../models/service";
+
 
 const baseURL = "http://localhost:3000"
 
@@ -29,11 +31,11 @@ async function getTicket(serviceName: string) {
 }
 
 
-async function getServices() {
+async function getServices(): Promise<Service[]> {
     const response = await fetch(baseURL + `/service/all`);
     if (response.ok) {
-        const services: { services: string[] } = await response.json();
-        return services.services;
+        const services = await response.json();
+        return services;
     } else {
         const errDetail = await response.json();
         if (errDetail.error)

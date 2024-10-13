@@ -57,7 +57,20 @@ app.post('/next-customer', function (request, response) {
         response.status(StatusCodes.BAD_REQUEST).send({ error: error.message });
     }
 });
-
+// **New Route: Call Customer**
+app.post('/call-customer', async function (request: Request, response: Response) {
+    const { customerId }: { customerId: number } = request.body; // Extract customerId from the request body
+    try {
+        const callSuccess = await Configuration.CallCustomer(customerId); // Attempt to call the customer
+        if (callSuccess) {
+            response.status(StatusCodes.OK).send({ message: `Customer ${customerId} called successfully.` }); // Successful call
+        } else {
+            response.status(StatusCodes.BAD_REQUEST).send({ message: `Failed to call customer ${customerId}.` }); // Handle failure
+        }
+    } catch (error: any) {
+        response.status(StatusCodes.BAD_REQUEST).send({ error: error.message }); // Handle errors by sending a 400 response
+    }
+});
 // Server startup
 
 app.listen(PORT, () => {

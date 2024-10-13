@@ -4,6 +4,7 @@ import cors from 'cors';
 import { Configuration } from "./configuration";
 import { StatusCodes } from "http-status-codes";
 import dotenv from 'dotenv'
+import { Database } from "./database";
 
 dotenv.config()
 
@@ -37,6 +38,11 @@ app.post('/ticket', async function (request: Request, response: Response, _: Nex
     const ticketId: number = await Configuration.issueTicket(serviceName || '')
     response.status(StatusCodes.OK).send({ ticketId: ticketId })
 });
+
+app.get('/service/all', async function (request: Request, response: Response) {
+    const services = await Database.getServices();
+    response.status(StatusCodes.OK).send(services)
+})
 
 app.post('/next-customer', function (request, response) {
     const { counterId }: { counterId: number } = request.body;

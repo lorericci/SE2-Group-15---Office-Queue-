@@ -39,4 +39,11 @@ export class Database {
         const ticketId = rows.pop().id as number
         return ticketId
     }
+
+    public static async getServices(): Promise<any[]> {
+        await Database.checkConnection()
+        const sql = "SELECT * FROM service"
+        const { rows } = await Database.instance.client.query(sql)
+        return rows
+    }  
 }

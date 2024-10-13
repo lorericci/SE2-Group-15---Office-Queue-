@@ -39,6 +39,16 @@ export class Database {
         const ticketId = rows.pop().id as number
         return ticketId
     }
+    // callcustomer
+    public static async CallCustomer(customerId: number): Promise<boolean> {
+    await Database.checkConnection();
+    const sql = "INSERT INTO call_log (customer_id, call_time) VALUES ($1, NOW()) returning id;";
+    const { rows } = await Database.instance.client.query(sql, [customerId]);
+    const callLogId = rows.pop()?.id as number;
+
+    // If callLogId exists, the call log was successfully inserted
+    return callLogId !== undefined;
+}
 
     public static async getServices(): Promise<any[]> {
         await Database.checkConnection()

@@ -10,14 +10,14 @@ const baseURL = "http://localhost:3000"
 async function getTicket(serviceName: string) {
     const response = await fetch(baseURL + `/ticket/${serviceName}`, {
         method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ serviceName: serviceName }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ serviceName: serviceName }),
     })
     if (response.ok) {
         const ticketId: { ticketId: number } = await response.json();
-         // const ticket = {ticketId: 3, estimatedTime: 10};
+        // const ticket = {ticketId: 3, estimatedTime: 10};
         return ticketId.ticketId;
     } else {
         const errDetail = await response.json();

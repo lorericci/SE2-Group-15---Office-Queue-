@@ -35,6 +35,11 @@ export function GetTicketComp() {
         }
     };
 
+    const handleNewTicket = () => {
+        setTicketId(null);
+        setShowQR(false);
+    }
+
     return (
         <>
             <Container fluid className="services-container m-0 p-0 d-flex flex-column justify-content-center align-items-center">
@@ -53,9 +58,7 @@ export function GetTicketComp() {
                 }
                 {waiting && <h1>Getting ticket... <Spinner animation="border" /></h1>}
                 
-                
                 {error && <Alert variant="danger">{error}</Alert>} 
-                
                 
                 {ticketId && !showQR && (
                     <div className="text-center mt-4">
@@ -74,7 +77,7 @@ export function GetTicketComp() {
                 {showQR && (
                     <div className="text-center mt-4">
                         <h3>Ticket #{ticketId}</h3>
-                        <Button variant='success' onClick={() => {setShowQR(false);}} className="mx-4"> 
+                        <Button variant='success' onClick={() => {handleNewTicket();}} className="mx-4"> 
                             Get another ticket
                         </Button>
                     </div>

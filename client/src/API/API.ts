@@ -8,7 +8,7 @@ const baseURL = "http://localhost:3000"
 /********   GET TICKET   *********/
 
 async function getTicket(serviceName: string) {
-    const response = await fetch(baseURL + `/ticket/${serviceName}`, {
+    const response = await fetch(baseURL + `/ticket`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

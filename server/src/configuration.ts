@@ -57,8 +57,9 @@ export class Configuration { // Implements the Singleton pattern
      * @param {number} counterId - The unique counter identifier
      * @param {string[]} serviceNames - An array of service names that the counter can handle
      */
-    public static assignCounter(counterId: number, serviceNames: string[]) {
+    public static async assignCounter(counterId: number, serviceNames: string[]) {
         const config = Configuration.instance;
+        await Database.assignCounter(counterId, serviceNames);
         config.counters.set(counterId, serviceNames);
     }
 
@@ -120,6 +121,5 @@ export class Configuration { // Implements the Singleton pattern
 
         return callLogged;
     }
-}
 
 }

@@ -39,6 +39,22 @@ export class Database {
         const ticketId = rows.pop().id as number
         return ticketId
     }
+
+    public static async assignCounter(counterId: number, serviceNames: string[]): Promise<void> {
+        await Database.checkConnection();
+    
+        const checkSql = `SELECT service_name FROM counter_service WHERE counter_id = $1 AND service_name = $2`;
+        
+        const insertSql = `INSERT INTO counter_service (counter_id, service_name, date) VALUES ($1, $2, NOW())`;
+    
+        for (const serviceName of serviceNames) {
+            const result = await Database.instance.client.query(checkSql, [counterId, serviceName]);
+            if (result.rows.length === 0) {
+                await Database.instance.client.query(insertSql, [counterId, serviceName]);
+            }
+        }
+    }
+
     // callcustomer
     public static async CallCustomer(customerId: number): Promise<boolean> {
     await Database.checkConnection();

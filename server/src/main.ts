@@ -44,6 +44,15 @@ app.get('/service/all', async function (request: Request, response: Response) {
     response.status(StatusCodes.OK).send(services)
 })
 
+app.get('/services/active', async function (request: Request, response: Response) {
+    try {
+        const activeServices = await Database.getActiveServices();
+        response.status(StatusCodes.OK).send(activeServices);
+    } catch (error: any) {
+        response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: error.message });
+    }
+});
+
 app.post('/next-customer', function (request, response) {
     const { counterId }: { counterId: number } = request.body;
     try {

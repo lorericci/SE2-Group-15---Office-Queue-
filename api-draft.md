@@ -3,7 +3,11 @@ POST /ticket - ask the server to issue a ticket for the requested service
     Response body: { ticketId: number, //TODO: expectedWaitingTime: number }
     Response status: OK, //TODO: specify others
     
-GET /service/all - get all the services in the daily configuration that are assigned to at least one counter
+GET /services - get all the services
+    Response body: { services: string[] }
+    Response status: OK, //TODO: others
+
+GET /services/active - get all the services in the daily configuration that are assigned to at least one counter
     Response body: { services: string[] }
     Response status: OK, //TODO: others
 

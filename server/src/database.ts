@@ -81,7 +81,8 @@ export class Database {
             WHERE date = CURRENT_DATE
         `;
         const { rows } = await Database.instance.client.query(sql);
-        return rows;
+        const activeServices = rows.map(row => row.service_name)
+        return activeServices;
     }
 
 }

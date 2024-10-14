@@ -39,7 +39,7 @@ app.post('/ticket', async function (request: Request, response: Response, _: Nex
     return response.status(StatusCodes.OK).send({ ticketId: ticketId })
 });
 
-app.get('/service/all', async function (request: Request, response: Response) {
+app.get('/services', async function (request: Request, response: Response) {
     const services = await Database.getServices();
     response.status(StatusCodes.OK).send(services)
 })

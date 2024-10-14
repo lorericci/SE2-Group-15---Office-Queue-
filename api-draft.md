@@ -32,5 +32,14 @@ GET /stats/(query parameter){daily, weekly, monthly}
             service7: 5
         }
 
-Updating the display of the current ticketId for each counter 
-requires a webSocket because the connection is initiated by the server.
+
+------------------ USER STORY 3 -----------------------
+
+GET /counters/count - return the total number of counters available
+    Response body: { count: number}
+
+
+webSocket
+PORT NUMBER: 3001
+Event name: call-customer
+Data exchanged: { ticketId, counterId }

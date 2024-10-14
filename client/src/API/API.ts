@@ -32,7 +32,7 @@ async function getTicket(serviceName: string) {
 
 
 async function getServices(): Promise<Service[]> {
-    const response = await fetch(baseURL + `/service/all`);
+    const response = await fetch(baseURL + `/services`);
     if (response.ok) {
         const services = await response.json();
         return services;
@@ -43,6 +43,22 @@ async function getServices(): Promise<Service[]> {
         if (errDetail.message)
             throw errDetail.message
         throw new Error("Error in getting services")
+    }
+}
+
+
+async function getActiveServices(): Promise<string[]> {
+    const response = await fetch(baseURL + `/services/active`);
+    if (response.ok) {
+        const activeServices = await response.json();
+        return activeServices;
+    } else {
+        const errDetail = await response.json();
+        if (errDetail.error)
+            throw errDetail.error;
+        if (errDetail.message)
+            throw errDetail.message;
+        throw new Error("Error in getting active services");
     }
 }
 
@@ -91,7 +107,7 @@ async function getNumCounters() {
 }
 
 const API = {
-    getTicket, nextCustomer, getServices, getNumCounters
+    getTicket, nextCustomer, getServices, getActiveServices, getNumCounters
 }
 
 export default API

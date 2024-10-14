@@ -2,10 +2,9 @@ import { Button, Container, Spinner, Alert } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import API from '../../API/API.ts'; 
-import Service from '../../models/service.ts';
 
 export function GetTicketComp() {
-    const [services, setServices] = useState<Service[]>([]);
+    const [services, setServices] = useState<string[]>([]);
     const [waiting, setWaiting] = useState<boolean>(false);
     const [ticketId, setTicketId] = useState<number | null>(null);
     const [showQR, setShowQR] = useState<boolean>(false);
@@ -14,7 +13,7 @@ export function GetTicketComp() {
     useEffect(() => {
         const getServices = async () => {
             try {
-                const services = await API.getServices();
+                const services = await API.getActiveServices();
                 setServices(services);
             } catch (err: any) {
                 setError(err.message || 'An error occurred while getting the services');
@@ -30,6 +29,7 @@ export function GetTicketComp() {
             const res = await API.getTicket(service);  
             setTicketId(res); 
             setWaiting(false);
+            setShowQR(true);
         } catch (err: any) {
             setError(err.message || 'An error occurred while getting the ticket');
         }
@@ -43,15 +43,15 @@ export function GetTicketComp() {
     return (
         <>
             <Container fluid className="services-container m-0 p-0 d-flex flex-column justify-content-center align-items-center">
-                {!waiting && <h1>Select a service</h1>}
-                {!waiting &&
+                {(!waiting && !showQR) && <h1>Select a service</h1>}
+                {(!waiting && !showQR) &&
                     <div className="w-25 d-flex flex-wrap justify-content-between row-gap-3"> 
                         {services.map(service => (
                             <Button className='service-button'
-                                key={service.name}
-                                onClick={() => handleGetTicket(service.name)}
+                                key={service}
+                                onClick={() => handleGetTicket(service)}
                             >
-                                {service.name}
+                                {service}
                             </Button>
                         ))}
                     </div>
@@ -60,7 +60,7 @@ export function GetTicketComp() {
                 
                 {error && <Alert variant="danger">{error}</Alert>} 
                 
-                {ticketId && !showQR && (
+                {ticketId && showQR && (
                     <div className="text-center mt-4">
                         <h1>Here it is your ticket!</h1>
                         <QRCode value={`Your queue number is:\n${ticketId}\n`} size={256} />

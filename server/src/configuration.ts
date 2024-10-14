@@ -10,6 +10,22 @@ export class Configuration { // Implements the Singleton pattern
     private constructor() {
         this.queues = new Map<string, Queue>()
         this.counters = new Map<number, string[]>()
+        this.tmpHardcodeInit() //TODO: remove when implementing config counters
+    }
+
+    /**
+     * The story config counters where services and counters will be configured will be implemented
+     * in a future sprint. Therefore this function temporarely replaces that implementation.
+     */
+    private tmpHardcodeInit(): void {
+        this.queues.set('shipping', new Queue(new Service('shipping', 12)))
+        this.queues.set('mail', new Queue(new Service('mail', 5)))
+        this.queues.set('atm', new Queue(new Service('atm', 7)))
+        this.queues.set('financial', new Queue(new Service('financial', 20)))
+        this.counters.set(1, ["atm", "financial"])
+        this.counters.set(2, ["atm"])
+        this.counters.set(3, ["shipping", "mail", "atm"])
+        this.counters.set(4, ["shipping"])
     }
 
     public static get instance(): Configuration {

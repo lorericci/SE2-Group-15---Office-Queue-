@@ -32,11 +32,11 @@ app.post('/assign-counter', function (request, response) {
     response.status(StatusCodes.OK).send({ message: `Counter ${counterId} assigned to services: ${serviceNames.join(", ")}` });
 });
 
-app.post('/ticket', async function (request: Request, response: Response, _: NextFunction) {
+app.post('/ticket', async function (request: Request, response: Response, _: NextFunction): Promise<any> {
     const { serviceName }: { serviceName: string | undefined } = request.body;
-    if (!serviceName) response.status(StatusCodes.BAD_REQUEST).send({ error: "Missing serviceName field" })
+    if (!serviceName) return response.status(StatusCodes.BAD_REQUEST).send({ error: "Missing serviceName field" })
     const ticketId: number = await Configuration.issueTicket(serviceName || '')
-    response.status(StatusCodes.OK).send({ ticketId: ticketId })
+    return response.status(StatusCodes.OK).send({ ticketId: ticketId })
 });
 
 app.get('/service/all', async function (request: Request, response: Response) {

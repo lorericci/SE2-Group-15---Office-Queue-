@@ -88,6 +88,25 @@ async function nextCustomer(counterId: number) {
 
 }
 
+async function getIfCounterConfig(counterId: number) {
+    try {
+        const response = await fetch(baseURL + `/counter/${counterId}`, {
+            method: 'GET'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            return data;
+        } else {
+            console.error('Error during the update');
+            return false;
+        }
+    } catch (error) {
+        console.error('Network error: ', error);
+        return false;
+    }
+}
+
 /********   CALL CUSTOMER   *********/
 
 async function getNumCounters() {
@@ -126,7 +145,7 @@ async function getStats(first_param: string, second_param: string, third_param: 
 }
 
 const API = {
-    getTicket, nextCustomer, getServices, getActiveServices, getNumCounters, getStats
+    getTicket, nextCustomer, getIfCounterConfig, getServices, getActiveServices, getNumCounters, getStats
 }
 
 export default API

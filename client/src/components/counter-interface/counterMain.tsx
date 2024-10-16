@@ -12,31 +12,20 @@ function CounterMain() {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        setConfig(true); // da eliminare questa riga e mettere il resto quando emanuele finisce la controparte backend API
-        /*
-        const counterConfig = async () => {
-            if (id) {
-                const numericId = parseInt(id, 10);
-                if (!isNaN(numericId)) {
-                    try {
-                        const response = await API.getIfCounterConfig(numericId);
-                        if (response) {
-                            setConfig(true);
-                        } else {
-                            setConfig(false);
-                        }
-                    } catch (error) {
-                        console.log(error);
-                    }
+        const isConfig = async () => {
+            try {
+                const response = await API.getActiveCounters();
+                console.log(response);
+                if (Array.isArray(response) && response.includes(Number(id))) {
+                    setConfig(true);
                 } else {
-                    console.error("Invalid counter ID");
+                    setConfig(false);
                 }
-            } else {
-                console.error("Counter ID is undefined");
+            } catch (error) {
+                console.log(error);
             }
         }
-        counterConfig();
-        */
+        isConfig();
     }, [id]);
 
     async function handleNextCustomer(id: string | undefined) {

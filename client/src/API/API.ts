@@ -96,7 +96,7 @@ async function getActiveCounters() {
 
         const data = await response.json();
         if (response.ok) {
-            return data;
+            return data.activeCounters;
         } else {
             console.error('Error during the update');
             return false;

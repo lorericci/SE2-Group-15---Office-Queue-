@@ -93,7 +93,7 @@ export class Configuration { // Implements the Singleton pattern
         if (typeof counterId !== 'number') //Typeguard
             throw new Error(`counterId must be a number but was ${typeof counterId}`)
         const config = Configuration.instance;
-        const services = config.counters.get(counterId);
+        const services: string[] | undefined = config.counters.get(counterId);
 
         if (!services) {
             throw new Error(`Counter ${counterId} is not configured`);
@@ -108,27 +108,13 @@ export class Configuration { // Implements the Singleton pattern
             }
         }
 
+        let nextTicket: number | undefined
         if (selectedQueue && selectedQueue.length > 0) {
-            const nextTicket = selectedQueue.nextCustomer();
-            return nextTicket;
+            nextTicket = selectedQueue.nextCustomer()
         }
 
-        return undefined;
+        //TODO: update db && notify client socket
+        return nextTicket
     }
-    // **CallCustomer**
-    public static async CallCustomer(customerId: number): Promise<boolean> {
-        const queue = Configuration.instance.queues.get('customerService');
-        if (!queue) {
-            throw new Error(`Queue for customer service not configured`);
-        }
 
-        const callLogged = await Database.CallCustomer(customerId);
-        if (callLogged) {
-            queue.enqueue(customerId);
-            // Emit a WebSocket event to notify all clients about the called customer
-            // io.emit('customer_called', { customerId });
-        }
-
-        return callLogged;
-    }
 }

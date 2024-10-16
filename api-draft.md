@@ -47,3 +47,13 @@ webSocket
 PORT NUMBER: 3001
 Event name: call-customer
 Data exchanged: { ticketId, counterId }
+
+------------------ USER STORY 4 -----------------------
+
+GET /stats/:first_param/:second_param/:third_param - return the stats filtered with the params
+
+first_param could be: 'service' - 'counter'
+
+second_param could be: 'daily' - 'weekly' - 'monthly'
+
+third_param could be: 'date' if daily - '[1,2,3,4]/month/year' if weekly - '[1..12]/year

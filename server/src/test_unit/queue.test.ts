@@ -1,9 +1,14 @@
 import { Queue } from '../queue';
 import { Service } from '../service';
 
+const service: Service = new Service('test-service-1', 12);
+
 describe('Queue', () => {
-    let service: Service;
     let queue: Queue;
+
+    beforeEach(() => {
+        queue = new Queue(service)
+    })
 
     beforeEach(() => {
         service = new Service();

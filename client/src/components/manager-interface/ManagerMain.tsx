@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, ButtonGroup, Dropdown, DropdownButton, ToggleButton } from "react-bootstrap";
 import API from "../../API/API";
 import "./ManagerMain.css";
+import { BarChartCounters, BarChartServices } from "./Graph";
 
 function ManagerMain() {
 
@@ -51,10 +52,13 @@ function StatsMenu() {
 
     
     const [services, setServices] = useState<string[]>(["Service 1", "Service 2", "Service 3"]);
+    const [numCounters, setNumCounters] = useState(3);
     const [serviceValue, setServiceValue] = useState(0);
     const [timeValue, setTimeValue] = useState(0);
+    const [counterValue, setCounterValue] = useState(0);
 
     const times = ["Daily", "Weekly", "Monthly"];
+    const mods = ["Service", "Counter"];
 
     // useEffect(() => {
     //     const getActiveServices = async () => {
@@ -65,10 +69,45 @@ function StatsMenu() {
     //     getActiveServices();
     // }, []);
 
+    // useEffect(() => {
+    //     const getNumCounters = async () => {
+    //         const count = await API.getNumCounters();
+    //         setNumCounters(count);
+    //         setNumCounters(6);
+    //     };
+    //     getNumCounters();
+    // }, []);
+
     return (
+        <>
         <div>
             <h2>Manager Interface</h2>
             <h3>Statistics</h3>
+
+            <ButtonGroup>
+                {mods.map((mod, idx) => (
+                    <ToggleButton
+                        key={idx}
+                        id={`mod-${idx}`}
+                        type="radio"
+                        name="mod"
+                        value={idx}
+                        checked={counterValue === idx}
+                        onClick={() => setCounterValue(idx)}
+                        style={{
+                            backgroundColor: counterValue === idx ? '#28a745' : 'transparent',
+                            borderColor: '#28a745',
+                            color: counterValue === idx ? 'white' : '#28a745',
+                            outline: 'none',
+                            boxShadow: 'none',
+                        }}
+                    >
+                        {mod}
+                    </ToggleButton>
+                ))}
+                
+            </ButtonGroup>
+                {" "}
 
             <ButtonGroup>
                 {times.map((time, idx) => (
@@ -92,30 +131,14 @@ function StatsMenu() {
                     </ToggleButton>
                 ))}
             </ButtonGroup>
-                {" "}
-            <ButtonGroup>
-                {services.map((service, idx) => (
-                    <ToggleButton
-                        key={idx}
-                        id={`radio-${idx}`}
-                        type="checkbox"
-                        name="service"
-                        value={service}
-                        checked={serviceValue === idx}
-                        onClick={() => setServiceValue(idx)}
-                        style={{
-                            backgroundColor: serviceValue === idx ? '#28a745' : 'transparent',
-                            borderColor: '#28a745',
-                            color: serviceValue === idx ? 'white' : '#28a745',
-                            outline: 'none',
-                            boxShadow: 'none',
-                        }}
-                    >
-                        {service}
-                    </ToggleButton>
-                ))}
-            </ButtonGroup>
         </div>
+        <div>
+            <BarChartServices />
+        </div>
+        <div>
+            <BarChartCounters />
+        </div>
+        </>
     );
 }
 

@@ -6,14 +6,24 @@ import { StatusCodes } from "http-status-codes";
 import dotenv from 'dotenv'
 import { Database } from "./database";
 
+import { Server } from 'socket.io'; // CODICE MESSO PER SOCKET
+
 dotenv.config()
 
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
-const app = express();
+export const app = express();
+
+// CODICE MESSO PER SOCKET
+const io = new Server(3001, {
+    cors: {
+        origin: "http://localhost:5173", // React frontend
+        methods: ["GET", "POST"]
+    }
+});
 
 // Middlewares
 
-app.use(express.json())
+app.use(express.json());
 
 app.use(morgan('dev'));
 
@@ -66,18 +76,20 @@ app.post('/next-customer', function (request, response) {
         response.status(StatusCodes.BAD_REQUEST).send({ error: error.message });
     }
 });
-// **New Route: Call Customer**
-app.post('/call-customer', async function (request: Request, response: Response) {
-    const { customerId }: { customerId: number } = request.body; // Extract customerId from the request body
+app.post("/call-customer", async function (request: Request, response: Response) {
+    const { customerId }: { customerId: number } = request.body;
     try {
-        const callSuccess = await Configuration.CallCustomer(customerId); // Attempt to call the customer
+        const callSuccess = await Configuration.CallCustomer(customerId);
+
         if (callSuccess) {
-            response.status(StatusCodes.OK).send({ message: `Customer ${customerId} called successfully.` }); // Successful call
+            // Notify all connected clients via WebSocket
+            io.emit("customer_called", { customerId });
+            response.status(StatusCodes.OK).send({ message: `Customer ${customerId} called successfully.` });
         } else {
-            response.status(StatusCodes.BAD_REQUEST).send({ message: `Failed to call customer ${customerId}.` }); // Handle failure
+            response.status(StatusCodes.BAD_REQUEST).send({ message: `Failed to call customer ${customerId}.` });
         }
     } catch (error: any) {
-        response.status(StatusCodes.BAD_REQUEST).send({ error: error.message }); // Handle errors by sending a 400 response
+        response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
 });
 // Server startup

@@ -30,7 +30,6 @@ async function getTicket(serviceName: string) {
 
 }
 
-
 async function getServices(): Promise<Service[]> {
     const response = await fetch(baseURL + `/services`);
     if (response.ok) {
@@ -89,12 +88,13 @@ async function nextCustomer(counterId: number) {
 
 }
 
+/********   CALL CUSTOMER   *********/
 
 async function getNumCounters() {
     try {
         const response = await fetch(baseURL + `/counters/count`);
-        const data = await response.json();
         if (response.ok) {
+            const data = await response.json();
             return data.count;
         } else {
             console.error('Error during the update');
@@ -106,8 +106,27 @@ async function getNumCounters() {
     }
 }
 
+/********   SEE STATS   *********/
+async function getStats(first_param: string, second_param: string, third_param: string) {
+    try {
+        const response = await fetch(baseURL + `stats/${first_param}/${second_param}/${third_param}`, {
+            method: 'GET'
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            console.error('Error getting stats');
+            return false;
+        }
+    } catch (error) {
+        console.error('Network error: ', error);
+        return false;
+    }
+}
+
 const API = {
-    getTicket, nextCustomer, getServices, getActiveServices, getNumCounters
+    getTicket, nextCustomer, getServices, getActiveServices, getNumCounters, getStats
 }
 
 export default API

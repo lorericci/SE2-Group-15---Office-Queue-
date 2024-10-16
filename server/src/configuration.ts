@@ -114,18 +114,8 @@ export class Configuration { // Implements the Singleton pattern
         return undefined;
     }
     // **CallCustomer**
-    /**
-     * Call a customer by their ID
-     * 
-     * This function checks if the queue for the customer service is configured,
-     * logs the call in the database, and enqueues the customer if the operation is successful.
-     *
-     * @param customerId - The unique identifier of the customer to be called
-     * @returns {boolean} - Returns true if the call was logged successfully; otherwise false
-     * @throws {Error} - Throws an error if the customer service queue is not configured
-     */
     public static async CallCustomer(customerId: number): Promise<boolean> {
-        const queue: Queue | undefined = Configuration.instance.queues.get('customerService');
+        const queue = Configuration.instance.queues.get('customerService');
         if (!queue) {
             throw new Error(`Queue for customer service not configured`);
         }
@@ -133,9 +123,10 @@ export class Configuration { // Implements the Singleton pattern
         const callLogged = await Database.CallCustomer(customerId);
         if (callLogged) {
             queue.enqueue(customerId);
+            // Emit a WebSocket event to notify all clients about the called customer
+            io.emit('customer_called', { customerId });
         }
 
         return callLogged;
     }
-
 }

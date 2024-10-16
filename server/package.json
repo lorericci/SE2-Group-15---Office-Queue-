@@ -4,7 +4,7 @@
   "description": "backend of the office queue application.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testTimeout=30000",
     "dev": "npx tsc --watch | nodemon ./dist/main.js"
   },
   "author": "Umberto Fontanazza",

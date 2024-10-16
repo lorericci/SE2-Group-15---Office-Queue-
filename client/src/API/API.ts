@@ -125,6 +125,24 @@ async function getNumCounters() {
     }
 }
 
+async function getQueues() {
+    try {
+        const response = await fetch(baseURL + `/queues/lenght`, {
+            method: 'GET'
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data;
+        } else {
+            console.error('Error getting queues');
+            return false;
+        }
+    } catch (error) {
+        console.error('Network error: ', error);
+        return false;
+    }
+}
+
 /********   SEE STATS   *********/
 async function getStats(first_param: string, second_param: string, third_param: string) {
     try {
@@ -145,7 +163,7 @@ async function getStats(first_param: string, second_param: string, third_param: 
 }
 
 const API = {
-    getTicket, nextCustomer, getActiveCounters, getServices, getActiveServices, getNumCounters, getStats
+    getTicket, nextCustomer, getActiveCounters, getServices, getActiveServices, getNumCounters, getQueues, getStats
 }
 
 export default API

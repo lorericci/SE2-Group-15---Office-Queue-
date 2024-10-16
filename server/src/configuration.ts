@@ -124,4 +124,13 @@ export class Configuration { // Implements the Singleton pattern
         return { nextTicketId: nextTicket, service: selectedQueue?.service };
     }
 
+    public static getQueueLengths(): { queueLengths: Map<string, number> } {
+        const config = Configuration.instance;
+        const queueLengths: Map<string, number>  = new Map<string, number>();
+        for (const [serviceName, queue] of config.queues) {
+            queueLengths.set(serviceName, queue.length);
+        }
+        return { queueLengths };
+    }
+
 }

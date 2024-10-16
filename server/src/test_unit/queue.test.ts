@@ -1,6 +1,8 @@
 import { Queue } from '../queue';
 import { Service } from '../service';
 
+jest.mock('../database');
+
 describe('Queue', () => {
     let queue: Queue;
     let service: Service;

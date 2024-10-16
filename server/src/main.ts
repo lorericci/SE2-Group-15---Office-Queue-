@@ -66,37 +66,21 @@ app.post('/next-customer', function (request, response) {
         response.status(StatusCodes.BAD_REQUEST).send({ error: error.message });
     }
 });
-// **New Route: Call Customer**
-import express, { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import io from './path-to-your-websocket-setup'; // Import the WebSocket server
+app.post("/call-customer", async function (request: Request, response: Response) {
+    const { customerId }: { customerId: number } = request.body;
+    try {
+        const callSuccess = await Configuration.CallCustomer(customerId);
 
-const app = express();
-app.use(express.json());
-
-app.post('/call-customer', async function (request: Request, response: Response) {
-  const { customerId }: { customerId: number } = request.body; 
-  try {
-    const callSuccess = await Configuration.CallCustomer(customerId);
-
-    if (callSuccess) {
-    
-      io.emit('customer_called', { customerId });
-
-    
-      response.status(StatusCodes.OK).send({ message: `Customer ${customerId} called successfully.` });
-    } else {
-    
-      response.status(StatusCodes.BAD_REQUEST).send({ message: `Failed to call customer ${customerId}.` });
+        if (callSuccess) {
+            // Notify all connected clients via WebSocket
+            io.emit("customer_called", { customerId });
+            response.status(StatusCodes.OK).send({ message: `Customer ${customerId} called successfully.` });
+        } else {
+            response.status(StatusCodes.BAD_REQUEST).send({ message: `Failed to call customer ${customerId}.` });
+        }
+    } catch (error: any) {
+        response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
-  } catch (error: any) {
-   
-    response.status(StatusCodes.BAD_REQUEST).send({ error: error.message });
-  }
-});
-
-app.listen(3001, () => {
-  console.log('HTTP server running on port 3001');
 });
 // Server startup
 

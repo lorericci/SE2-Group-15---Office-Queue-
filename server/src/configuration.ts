@@ -90,6 +90,8 @@ export class Configuration { // Implements the Singleton pattern
      * @throws {Error} - Throws an error if the counter is not configured with any services
      */
     public static callNextCustomer(counterId: number): number | undefined {
+        if (typeof counterId !== 'number') //Typeguard
+            throw new Error(`counterId must be a number but was ${typeof counterId}`)
         const config = Configuration.instance;
         const services = config.counters.get(counterId);
 

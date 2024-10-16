@@ -64,7 +64,8 @@ app.get('/services/active', async function (request: Request, response: Response
 });
 
 app.post('/next-customer', function (request, response) {
-    const { counterId }: { counterId: number } = request.body;
+    let { counterId } = request.body;
+    counterId = parseInt(counterId || '', 10)
     try {
         const nextTicketId = Configuration.callNextCustomer(counterId);
         if (nextTicketId) {
@@ -73,6 +74,7 @@ app.post('/next-customer', function (request, response) {
             response.status(StatusCodes.OK).send({ message: "No clients in queue" });
         }
     } catch (error: any) {
+        console.log("Error message: ", error)
         response.status(StatusCodes.BAD_REQUEST).send({ error: error.message });
     }
 });

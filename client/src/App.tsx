@@ -3,7 +3,6 @@ import './App.css';
 import API from './API/API.ts';
 import { GetTicketComp } from './components/customer-screen/getTicketComp.tsx';
 import { useEffect, useState } from 'react';
-import { Alert, Row } from 'react-bootstrap';
 import NavHeader from './components/navHeader/NavHeader.tsx';
 import CounterMain from './components/counter-interface/CounterMain.tsx';
 import Display from './components/main-display/displayMain.tsx';
@@ -24,18 +23,6 @@ function App() {
     }
   }, [message]);
 
-  async function NextCustomer(id: number) {
-    console.log("Calling API for next customer...");
-    const ticket_id = await API.nextCustomer(id);
-    console.log("Ticket ID returned:", ticket_id);
-
-    if (ticket_id) {
-      setMessage({ msg: "Stiamo servendo il ticket: " + ticket_id, type: 'success' });
-    } else {
-      setMessage({ msg: "Errore nel generare il prossimo ticket da servire", type: 'danger' });
-    }
-  }
-
 
   return (
     <Routes>
@@ -43,19 +30,12 @@ function App() {
         <>
           <NavHeader />
           <div>
-            {typeof message === 'object' && message !== null && (
-              <Row>
-                <Alert className="text-center" variant={message.type} onClose={() => setMessage('')} dismissible>
-                  {message.msg}
-                </Alert>
-              </Row>
-            )}
             <Outlet />
           </div>
         </>
       }>
 
-        <Route path="counters/:id" element={<CounterMain NextCustomer={NextCustomer} />} />
+        <Route path="counters/:id" element={<CounterMain />} />
         <Route path="get-ticket" element={<GetTicketComp />} />
         <Route path="display" element={<Display />} />
         <Route path="manager" element={<ManagerMain />} />

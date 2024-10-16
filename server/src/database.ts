@@ -62,6 +62,14 @@ export class Database {
         }
     }
 
+    public static async getActiveCounters(): Promise<Number[]> {
+        await Database.checkConnection();
+        const selectSql = `SELECT DISTINCT counter_id FROM counter_service`;
+        const { rows } = await Database.instance.pool.query(selectSql);
+        const activeCounters = rows.map(row => row.counter_id);
+        return activeCounters;
+    }
+
     public static async getServices(): Promise<any[]> {
         await Database.checkConnection()
         const sql = "SELECT * FROM service"

@@ -42,6 +42,11 @@ app.post('/assign-counter', function (request, response) {
     response.status(StatusCodes.OK).send({ message: `Counter ${counterId} assigned to services: ${serviceNames.join(", ")}` });
 });
 
+app.get('/counters/active', async function (request, response) {
+    const activeCounters = await Database.getActiveCounters();
+    response.status(StatusCodes.OK).send({activeCounters: activeCounters}) 
+})
+
 app.post('/ticket', async function (request: Request, response: Response, _: NextFunction): Promise<any> {
     const { serviceName }: { serviceName: string | undefined } = request.body;
     if (!serviceName) return response.status(StatusCodes.BAD_REQUEST).send({ error: "Missing serviceName field" })

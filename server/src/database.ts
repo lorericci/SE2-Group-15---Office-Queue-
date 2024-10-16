@@ -78,9 +78,9 @@ export class Database {
         const sql = `
             SELECT DISTINCT service_name
             FROM counter_service
-            WHERE date = CURRENT_DATE
         `;
         const { rows } = await Database.instance.client.query(sql);
+        console.log(rows)
         const activeServices = rows.map(row => row.service_name)
         return activeServices;
     }

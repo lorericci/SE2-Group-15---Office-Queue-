@@ -1,41 +1,43 @@
 import { Queue } from '../queue';
 import { Service } from '../service';
 
-jest.mock('../database');
-
 describe('Queue', () => {
-    let queue: Queue;
     let service: Service;
+    let queue: Queue;
 
-    afterEach(() => {
-        jest.clearAllMocks();
+    beforeEach(() => {
+        service = new Service();
+        queue = new Queue(service);
     });
 
-    test('should create an instance with the correct service', () => {
-        expect(queue.service).toBe(service);
-    });
-
-    test('should start with an empty queue', () => {
+    test('should initialize with an empty queue', () => {
         expect(queue.length).toBe(0);
     });
 
-    test('should enqueue a ticketId', () => {
-        queue.enqueue(5);
+    test('should return the service instance', () => {
+        expect(queue.service).toBe(service);
+    });
+
+    test('should enqueue a ticket id', () => {
+        queue.enqueue(1);
         expect(queue.length).toBe(1);
     });
 
-    test('should not enqueue a negative ticketId', () => {
+    test('should throw an error when enqueuing a non-positive ticket id', () => {
+        expect(() => queue.enqueue(0)).toThrow('ticket id must be positive');
         expect(() => queue.enqueue(-1)).toThrow('ticket id must be positive');
     });
 
-    test('should return the next customer in line', () => {
+    test('should dequeue the next customer', () => {
         queue.enqueue(1);
         queue.enqueue(2);
         expect(queue.nextCustomer()).toBe(1);
+        expect(queue.length).toBe(1);
         expect(queue.nextCustomer()).toBe(2);
+        expect(queue.length).toBe(0);
     });
 
-    test('should return undefined when no customers are in the queue', () => {
+    test('should return undefined when dequeuing from an empty queue', () => {
         expect(queue.nextCustomer()).toBeUndefined();
     });
 });

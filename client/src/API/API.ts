@@ -114,7 +114,7 @@ async function getNumCounters() {
         const response = await fetch(baseURL + `/counters/count`);
         if (response.ok) {
             const data = await response.json();
-            return data.count;
+            return data;
         } else {
             console.error('Error during the update');
             return false;

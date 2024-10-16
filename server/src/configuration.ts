@@ -20,7 +20,7 @@ export class Configuration { // Implements the Singleton pattern
     private tmpHardcodeInit(): void {
         this.queues.set('Shipping', new Queue(new Service('Shipping', 12)))
         this.queues.set('Mail', new Queue(new Service('Mail', 5)))
-        this.queues.set('Atm', new Queue(new Service('Stm', 7)))
+        this.queues.set('Atm', new Queue(new Service('Atm', 7)))
         this.queues.set('Financial', new Queue(new Service('Financial', 20)))
         this.counters.set(1, ["Atm", "Financial"])
         this.counters.set(2, ["Atm"])
@@ -113,7 +113,10 @@ export class Configuration { // Implements the Singleton pattern
             nextTicket = selectedQueue.nextCustomer()
         }
 
-        //TODO: update db && notify client socket
+        if(nextTicket)
+            Database.serveTicket(nextTicket, counterId)
+
+        //TODO: notify client socket
         return { nextTicketId: nextTicket, service: selectedQueue?.service };
     }
 

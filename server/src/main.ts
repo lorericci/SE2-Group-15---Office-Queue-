@@ -79,6 +79,15 @@ app.post('/next-customer', function (request, response) {
     }
 });
 
+app.get('/counters/count', async function (request: Request, response: Response){
+    try {
+        const count = await Database.getNumCounters();
+        response.status(StatusCodes.OK).send(count);
+    } catch (error: any) {
+        response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: error.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`[server]: Server is running solid and fast at http://localhost:${PORT}`);
 });

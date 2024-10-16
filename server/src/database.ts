@@ -80,4 +80,12 @@ export class Database {
         return activeServices;
     }
 
+    public static async getNumCounters(): Promise<number> {
+        await Database.checkConnection();
+        const sql = `SELECT COUNT(*) FROM counter`;
+        const { rows } = await Database.instance.pool.query(sql);
+        const count = rows[0].count;
+        return count;
+    }
+
 }

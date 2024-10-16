@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { socket } from './socket.tsx';
-import API from '../../API/API.tsx';
+import API from '../../API/API.ts';
 import './displayMain.css';
 
 const Display = () => {
@@ -12,9 +12,10 @@ const Display = () => {
 
     const getNumCounters = async () => {
         // Call API to get the number of counters
-        // const count = await API.getNumCounters();
-        // setNumCounters(count);
-        setNumCounters(6);
+        const count = await API.getNumCounters();
+        setNumCounters(count);
+        console.log("Stampa" + count);
+        //setNumCounters(6);
     };
     getNumCounters();
   },[]);

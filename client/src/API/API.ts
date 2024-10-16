@@ -88,9 +88,9 @@ async function nextCustomer(counterId: number) {
 
 }
 
-async function getIfCounterConfig(counterId: number) {
+async function getActiveCounters() {
     try {
-        const response = await fetch(baseURL + `/counter/${counterId}`, {
+        const response = await fetch(baseURL + `/counters/active`, {
             method: 'GET'
         });
 
@@ -145,7 +145,7 @@ async function getStats(first_param: string, second_param: string, third_param: 
 }
 
 const API = {
-    getTicket, nextCustomer, getIfCounterConfig, getServices, getActiveServices, getNumCounters, getStats
+    getTicket, nextCustomer, getActiveCounters, getServices, getActiveServices, getNumCounters, getStats
 }
 
 export default API

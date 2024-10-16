@@ -79,11 +79,9 @@ app.post('/next-customer', function (request, response) {
 app.post("/call-customer", async function (request: Request, response: Response) {
     const { customerId }: { customerId: number } = request.body;
     try {
-        const callSuccess = await Configuration.CallCustomer(customerId);
+        const callSuccess = await Configuration.callCustomer(customerId);
 
         if (callSuccess) {
-            // Notify all connected clients via WebSocket
-            io.emit("customer_called", { customerId });
             response.status(StatusCodes.OK).send({ message: `Customer ${customerId} called successfully.` });
         } else {
             response.status(StatusCodes.BAD_REQUEST).send({ message: `Failed to call customer ${customerId}.` });

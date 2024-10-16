@@ -113,20 +113,30 @@ export class Configuration { // Implements the Singleton pattern
 
         return undefined;
     }
-    // **CallCustomer**
-    public static async CallCustomer(customerId: number): Promise<boolean> {
-        const queue = Configuration.instance.queues.get('customerService');
+    // CallCustomer
+    public static async callCustomer(customerId: number): Promise<boolean> {
+        const config = Configuration.instance;
+        const queue = config.queues.get('customerService');
+        
         if (!queue) {
             throw new Error(`Queue for customer service not configured`);
         }
-
-        const callLogged = await Database.CallCustomer(customerId);
+    
+        const callLogged = await Database.callCustomer(customerId);
+        
         if (callLogged) {
-            queue.enqueue(customerId);
             // Emit a WebSocket event to notify all clients about the called customer
-            io.emit('customer_called', { customerId });
+            Configuration.io?.emit('customer_called', { customerId });
+            queue.enqueue(customerId);
         }
-
+    
         return callLogged;
     }
-}
+    
+    // Add a static property for the WebSocket server
+    private static io: SocketIO.Server | null = null;
+    
+    // Add a method to set the WebSocket server
+    public static setSocketIO(io: SocketIO.Server) {
+        Configuration.io = io;
+    }

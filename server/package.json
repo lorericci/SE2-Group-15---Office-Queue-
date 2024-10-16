@@ -4,7 +4,7 @@
   "description": "backend of the office queue application.",
   "main": "index.js",
   "scripts": {
-    "test": "test",
+    "test": "set NODE_ENV=test && jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testTimeout=30000",
     "dev": "npx tsc --watch | nodemon ./dist/main.js"
   },
   "author": "Umberto Fontanazza",
@@ -15,7 +15,9 @@
     "@types/jest": "^29.5.13",
     "@types/morgan": "^1.9.9",
     "@types/pg": "^8.11.10",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.7",
+    "ts-jest": "^29.2.5",
     "typescript": "^5.6.2"
   },
   "dependencies": {

@@ -1,14 +1,14 @@
-import { Client } from 'pg'
+import { Pool } from 'pg'
 
 export class Database {
     private static _instance: Database | null = null
     private connected: boolean
-    private client: Client
+    private pool: Pool
 
     private constructor() {
         const connectionString = process.env.DB_CONNECTION_STRING
         if (!connectionString) throw new Error(`Couldn't load DB_CONNECTION_STRING environment variable`)
-        this.client = new Client(connectionString)
+        this.pool = new Pool({connectionString})
         this.connected = false
     }
 
@@ -21,13 +21,13 @@ export class Database {
     public static async tryCloseClient(): Promise<void> {
         if (!Database._instance) return
         if (!Database.instance.connected) return
-        await Database.instance.client.end()
+        await Database.instance.pool.end()
     }
 
     private static async checkConnection(): Promise<void> {
         if (Database.instance.connected) return
         Database.instance.connected = true
-        await Database.instance.client.connect()
+        await Database.instance.pool.connect()
     }
 
     /**
@@ -36,9 +36,15 @@ export class Database {
     public static async issueTicket(serviceName: string): Promise<number> {
         await Database.checkConnection()
         const sql = "INSERT INTO ticket (service_name) VALUES ($1) returning id;"
-        const { rows } = await Database.instance.client.query(sql, [serviceName])
+        const { rows } = await Database.instance.pool.query(sql, [serviceName])
         const ticketId = rows.pop().id as number
         return ticketId
+    }
+
+    public static async serveTicket(ticketId: number, counterId: number) {
+        await Database.checkConnection();
+        const updateSql = "UPDATE ticket SET counter_id = $1, served_at = NOW() WHERE id = $2";
+        await Database.instance.pool.query(updateSql, [counterId, ticketId]);
     }
 
     public static async assignCounter(counterId: number, serviceNames: string[]): Promise<void> {
@@ -49,9 +55,9 @@ export class Database {
         const insertSql = `INSERT INTO counter_service (counter_id, service_name, date) VALUES ($1, $2, NOW())`;
 
         for (const serviceName of serviceNames) {
-            const result = await Database.instance.client.query(checkSql, [counterId, serviceName]);
+            const result = await Database.instance.pool.query(checkSql, [counterId, serviceName]);
             if (result.rows.length === 0) {
-                await Database.instance.client.query(insertSql, [counterId, serviceName]);
+                await Database.instance.pool.query(insertSql, [counterId, serviceName]);
             }
         }
     }
@@ -59,7 +65,7 @@ export class Database {
     public static async getServices(): Promise<any[]> {
         await Database.checkConnection()
         const sql = "SELECT * FROM service"
-        const { rows } = await Database.instance.client.query(sql)
+        const { rows } = await Database.instance.pool.query(sql)
         return rows
     }
 
@@ -69,7 +75,7 @@ export class Database {
             SELECT DISTINCT service_name
             FROM counter_service
         `;
-        const { rows } = await Database.instance.client.query(sql);
+        const { rows } = await Database.instance.pool.query(sql);
         const activeServices = rows.map(row => row.service_name)
         return activeServices;
     }

@@ -86,10 +86,10 @@ export class Configuration { // Implements the Singleton pattern
      * In case of queues of equal length, the service with the lowest service time is selected
      * 
      * @param {number} counterId - The unique counter identifier
-     * @returns {number | undefined} - The ticket number of the next customer to be served, or undefined if no clients are in queue
+     * @returns {{ nextTicket: number | undefined, service: Service | undefined }} - The ticket number of the next customer to be served and the selected service, or undefined if no clients are in queue
      * @throws {Error} - Throws an error if the counter is not configured with any services
      */
-    public static callNextCustomer(counterId: number): number | undefined {
+    public static callNextCustomer(counterId: number): { nextTicketId: number | undefined, service: Service | undefined } {
         if (typeof counterId !== 'number') //Typeguard
             throw new Error(`counterId must be a number but was ${typeof counterId}`)
         const config = Configuration.instance;
@@ -114,7 +114,7 @@ export class Configuration { // Implements the Singleton pattern
         }
 
         //TODO: update db && notify client socket
-        return nextTicket
+        return { nextTicketId: nextTicket, service: selectedQueue?.service };
     }
 
 }

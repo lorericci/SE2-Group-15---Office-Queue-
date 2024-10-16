@@ -127,7 +127,7 @@ async function getNumCounters() {
 
 async function getQueues() {
     try {
-        const response = await fetch(baseURL + `/queues/lenght`, {
+        const response = await fetch(baseURL + `/queues/length`, {
             method: 'GET'
         });
         if (response.ok) {

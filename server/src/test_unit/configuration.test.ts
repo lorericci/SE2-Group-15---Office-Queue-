@@ -18,8 +18,7 @@ describe('Configuration', () => {
     });
 
     test('should issue a ticket for a configured service', async () => {
-        Configuration.addService('TestService', 10);
-        const ticketId = await Configuration.issueTicket('TestService');
+        const ticketId = await Configuration.issueTicket('Shipping');
         expect(ticketId).toBeGreaterThan(0);
     });
 

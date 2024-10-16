@@ -9,7 +9,7 @@ import { Database } from "./database";
 dotenv.config()
 
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
-const app = express();
+export const app = express();
 
 // Middlewares
 

@@ -6,13 +6,14 @@ import { StatusCodes } from "http-status-codes";
 import dotenv from 'dotenv'
 import { Database } from "./database";
 
-import { Server } from 'socket.io';
+import { Server } from 'socket.io'; // CODICE MESSO PER SOCKET
 
 dotenv.config()
 
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
 export const app = express();
 
+// CODICE MESSO PER SOCKET
 const io = new Server(3001, {
     cors: {
         origin: "http://localhost:5173", // React frontend

@@ -1,6 +1,7 @@
 import { Queue } from "./queue";
 import { Service } from "./service";
 import { Database } from "./database";
+import { Server } from "socket.io";
 
 export class Configuration { // Implements the Singleton pattern
     private static _instance: Configuration | null = null;
@@ -89,7 +90,7 @@ export class Configuration { // Implements the Singleton pattern
      * @returns {{ nextTicket: number | undefined, service: Service | undefined }} - The ticket number of the next customer to be served and the selected service, or undefined if no clients are in queue
      * @throws {Error} - Throws an error if the counter is not configured with any services
      */
-    public static callNextCustomer(counterId: number): { nextTicketId: number | undefined, service: Service | undefined } {
+    public static callNextCustomer(counterId: number, io: Server): { nextTicketId: number | undefined, service: Service | undefined } {
         if (typeof counterId !== 'number') //Typeguard
             throw new Error(`counterId must be a number but was ${typeof counterId}`)
         const config = Configuration.instance;
@@ -117,6 +118,9 @@ export class Configuration { // Implements the Singleton pattern
             Database.serveTicket(nextTicket, counterId)
 
         //TODO: notify client socket
+
+        io.emit('call-customer', { ticketId: nextTicket, counterId: counterId });
+
         return { nextTicketId: nextTicket, service: selectedQueue?.service };
     }
 

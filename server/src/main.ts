@@ -67,7 +67,7 @@ app.post('/next-customer', function (request, response) {
     let { counterId } = request.body;
     counterId = parseInt(counterId || '', 10)
     try {
-        const {nextTicketId, service} = Configuration.callNextCustomer(counterId);
+        const {nextTicketId, service} = Configuration.callNextCustomer(counterId, io);
         if (nextTicketId) {
             response.status(StatusCodes.OK).send({ ticketId: nextTicketId, service: service });
         } else {

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { socket } from './socket.tsx';
 import API from '../../API/API.ts';
 import './displayMain.css';
+import { Button } from 'react-bootstrap';
 
 const Display = () => {
-  const [ticketInfo, setTicketInfo] = useState<{ [key: number]: number }>({});
+  const [ticketInfo, setTicketInfo] = useState<{ [key: number]: number }>([123, 22, 23, 25]);
   const [lastCounter, setLastCounter] = useState(0);
   const [numCounters, setNumCounters] = useState(0);
 
@@ -14,7 +15,7 @@ const Display = () => {
         // Call API to get the number of counters
         const count = await API.getNumCounters();
         setNumCounters(count);
-        console.log("Stampa" + count);
+        //console.log("Stampa" + count);
         //setNumCounters(6);
     };
     getNumCounters();
@@ -25,7 +26,7 @@ const Display = () => {
     socket.on('call-customer', ({ ticketId, counterId }) => {
         setTicketInfo((prevInfo) => ({
             ...prevInfo,
-            [counterId]: ticketId,
+            [counterId-1]: ticketId,
           }));
           setLastCounter(counterId);
     });
@@ -40,7 +41,7 @@ const Display = () => {
     if (lastCounter !== null) {
       // Reproduce sound every time lastCounter changes
       const audio = new Audio('./sound.mp3');
-      audio.play();
+      audio.play().catch(error => console.log('Playback failed:', error));
     }
   }, [lastCounter]);
 
@@ -50,13 +51,13 @@ const Display = () => {
       {[...Array(numCounters)].map((_, counterId) => (
         <div key={counterId} className="counter-box">
           <h2>Counter {counterId + 1}</h2>
-          <h3>Ticket: {ticketInfo[counterId + 1] || '---'}</h3>
+          <h3>Ticket: {ticketInfo[counterId] || '---'}</h3>
         </div>
       ))}
     </div>
     <div className="customer-info">
       <h3>Last call</h3>
-      <h4>Ticket #{ticketInfo[lastCounter] || '---'}</h4>
+      <h4>Ticket #{ticketInfo[lastCounter-1] || '---'}</h4>
       <h4>requested at Counter {lastCounter || '---'}</h4>
     </div>
     </>

@@ -76,7 +76,7 @@ async function nextCustomer(counterId: number) {
 
         const data = await response.json();
         if (response.ok) {
-            return data.ticketId;
+            return data;
         } else {
             console.error('Error during the update');
             return false;

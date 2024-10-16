@@ -4,20 +4,25 @@ import API from "../../API/API";
 import { useState } from "react";
 
 function CounterMain() {
-
     const { id } = useParams();
     const [show, setShow] = useState(false);
     const [ticket_id, setTickeId] = useState('');
     const [service, setService] = useState('');
+    const [message, setMessage] = useState('');
 
     async function handleNextCustomer(id: string | undefined) {
         if (id) {
             const numericId = parseInt(id, 10);
             if (!isNaN(numericId)) {
-                const ticket_id = await API.nextCustomer(numericId);
-                if (ticket_id) {
-                    setTickeId(ticket_id);
+                const nextCustomer = await API.nextCustomer(numericId);
+                if (nextCustomer.message) {
+                    setShow(false);
+                    setMessage('No Clients in queue');
+                } else {
+                    setTickeId(nextCustomer.ticketId);
+                    setService(nextCustomer.service.name);
                     setShow(true);
+                    setMessage('');
                 }
             } else {
                 console.log("ID not valid")
@@ -30,11 +35,21 @@ function CounterMain() {
     return (
         <div style={{
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
             height: '100vh'
         }}>
-            {show && <h2>You will serve the customer with ticket id: {ticket_id} for service: { }</h2>}
+            {show && (
+                <h2 style={{ marginBottom: '20px' }}>
+                    You will serve the customer with ticket id: {ticket_id} for service: {service}
+                </h2>
+            )}
+            {message && (
+                <h2 style={{ marginBottom: '20px' }}>
+                    {message}
+                </h2>
+            )}
             <Button onClick={() => { handleNextCustomer(id) }}>
                 Next Customer
             </Button>
@@ -42,4 +57,4 @@ function CounterMain() {
     );
 }
 
-export default CounterMain
+export default CounterMain;

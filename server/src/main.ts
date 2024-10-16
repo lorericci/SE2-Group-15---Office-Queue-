@@ -6,14 +6,23 @@ import { StatusCodes } from "http-status-codes";
 import dotenv from 'dotenv'
 import { Database } from "./database";
 
+import { Server } from 'socket.io';
+
 dotenv.config()
 
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
 export const app = express();
 
+const io = new Server(3001, {
+    cors: {
+        origin: "http://localhost:5173", // React frontend
+        methods: ["GET", "POST"]
+    }
+});
+
 // Middlewares
 
-app.use(express.json())
+app.use(express.json());
 
 app.use(morgan('dev'));
 

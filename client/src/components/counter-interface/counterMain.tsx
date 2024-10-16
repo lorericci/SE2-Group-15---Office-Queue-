@@ -41,9 +41,14 @@ function CounterMain() {
             height: '100vh'
         }}>
             {show && (
-                <h2 style={{ marginBottom: '20px' }}>
-                    You will serve the customer with ticket id: {ticket_id} for service: {service}
-                </h2>
+                <div style={{ marginBottom: '20px' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>
+                        You will serve the customer
+                    </h2>
+                    <span style={{ fontSize: '32px', fontWeight: 'bold' }}>
+                        Ticket: {ticket_id} | Service: {service}
+                    </span>
+                </div>
             )}
             {message && (
                 <h2 style={{ marginBottom: '20px' }}>

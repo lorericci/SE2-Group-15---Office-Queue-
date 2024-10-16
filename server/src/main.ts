@@ -6,20 +6,10 @@ import { StatusCodes } from "http-status-codes";
 import dotenv from 'dotenv'
 import { Database } from "./database";
 
-import { Server } from 'socket.io'; // CODICE MESSO PER SOCKET
-
 dotenv.config()
 
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
 export const app = express();
-
-// CODICE MESSO PER SOCKET
-const io = new Server(3001, {
-    cors: {
-        origin: "http://localhost:5173", // React frontend
-        methods: ["GET", "POST"]
-    }
-});
 
 // Middlewares
 
@@ -72,7 +62,7 @@ app.post('/next-customer', function (request, response) {
     let { counterId } = request.body;
     counterId = parseInt(counterId || '', 10)
     try {
-        const {nextTicketId, service} = Configuration.callNextCustomer(counterId, io);
+        const {nextTicketId, service} = Configuration.callNextCustomer(counterId);
         if (nextTicketId) {
             response.status(StatusCodes.OK).send({ ticketId: nextTicketId, service: service });
         } else {
@@ -92,6 +82,16 @@ app.get('/counters/count', async function (request: Request, response: Response)
         response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
 });
+
+app.get('/queues/length', async function (request: Request, response: Response) {
+    try {
+        const queuesLength = Configuration.getQueuesLength();
+        const queuesLengthObj = Object.fromEntries(queuesLength);
+        response.status(StatusCodes.OK).send(queuesLengthObj);
+    } catch (error: any) {
+        response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: error.message });
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`[server]: Server is running solid and fast at http://localhost:${PORT}`);

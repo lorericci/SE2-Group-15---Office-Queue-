@@ -124,7 +124,7 @@ export class Configuration { // Implements the Singleton pattern
         if (callLogged) {
             queue.enqueue(customerId);
             // Emit a WebSocket event to notify all clients about the called customer
-            io.emit('customer_called', { customerId });
+            // io.emit('customer_called', { customerId });
         }
 
         return callLogged;

@@ -10,11 +10,6 @@ describe('Queue', () => {
         queue = new Queue(service)
     })
 
-    beforeEach(() => {
-        service = new Service();
-        queue = new Queue(service);
-    });
-
     test('should initialize with an empty queue', () => {
         expect(queue.length).toBe(0);
     });

@@ -67,9 +67,9 @@ app.post('/next-customer', function (request, response) {
     let { counterId } = request.body;
     counterId = parseInt(counterId || '', 10)
     try {
-        const nextTicketId = Configuration.callNextCustomer(counterId);
+        const {nextTicketId, service} = Configuration.callNextCustomer(counterId);
         if (nextTicketId) {
-            response.status(StatusCodes.OK).send({ ticketId: nextTicketId });
+            response.status(StatusCodes.OK).send({ ticketId: nextTicketId, service: service });
         } else {
             response.status(StatusCodes.OK).send({ message: "No clients in queue" });
         }

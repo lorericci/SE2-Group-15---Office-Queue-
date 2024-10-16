@@ -1,0 +1,27 @@
+/* Rimuovi il contorno sui pulsanti */
+button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Stile per pulsante attivo/selezionato */
+.custom-btn.custom-btn-success {
+    background-color: #28a745 !important; /* Colore verde personalizzato */
+    border-color: #28a745 !important;
+    color: white !important;
+}
+
+/* Stile per pulsante non selezionato */
+.custom-btn.custom-btn-outline-success {
+    background-color: transparent !important;
+    border-color: #28a745 !important;
+    color: #28a745 !important;
+}
+
+/* Hover: cambia il colore su hover per entrambi */
+.custom-btn.custom-btn-success:hover,
+.custom-btn.custom-btn-outline-success:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+    color: white !important;
+}

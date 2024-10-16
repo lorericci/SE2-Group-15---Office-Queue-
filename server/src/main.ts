@@ -9,7 +9,7 @@ import { Database } from "./database";
 dotenv.config()
 
 const PORT: number = parseInt(process.env.EXPRESS_PORT || '3000', 10)
-const app = express();
+export const app = express();
 
 // Middlewares
 
@@ -39,10 +39,19 @@ app.post('/ticket', async function (request: Request, response: Response, _: Nex
     return response.status(StatusCodes.OK).send({ ticketId: ticketId })
 });
 
-app.get('/service/all', async function (request: Request, response: Response) {
+app.get('/services', async function (request: Request, response: Response) {
     const services = await Database.getServices();
     response.status(StatusCodes.OK).send(services)
 })
+
+app.get('/services/active', async function (request: Request, response: Response) {
+    try {
+        const activeServices = await Database.getActiveServices();
+        response.status(StatusCodes.OK).send(activeServices);
+    } catch (error: any) {
+        response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: error.message });
+    }
+});
 
 app.post('/next-customer', function (request, response) {
     const { counterId }: { counterId: number } = request.body;

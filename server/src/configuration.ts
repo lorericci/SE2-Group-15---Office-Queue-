@@ -18,14 +18,14 @@ export class Configuration { // Implements the Singleton pattern
      * in a future sprint. Therefore this function temporarely replaces that implementation.
      */
     private tmpHardcodeInit(): void {
-        this.queues.set('shipping', new Queue(new Service('shipping', 12)))
-        this.queues.set('mail', new Queue(new Service('mail', 5)))
-        this.queues.set('atm', new Queue(new Service('atm', 7)))
-        this.queues.set('financial', new Queue(new Service('financial', 20)))
-        this.counters.set(1, ["atm", "financial"])
-        this.counters.set(2, ["atm"])
-        this.counters.set(3, ["shipping", "mail", "atm"])
-        this.counters.set(4, ["shipping"])
+        this.queues.set('Shipping', new Queue(new Service('Shipping', 12)))
+        this.queues.set('Mail', new Queue(new Service('Mail', 5)))
+        this.queues.set('Atm', new Queue(new Service('Stm', 7)))
+        this.queues.set('Financial', new Queue(new Service('Financial', 20)))
+        this.counters.set(1, ["Atm", "Financial"])
+        this.counters.set(2, ["Atm"])
+        this.counters.set(3, ["Shipping", "Mail", "Atm"])
+        this.counters.set(4, ["Shipping"])
     }
 
     public static get instance(): Configuration {

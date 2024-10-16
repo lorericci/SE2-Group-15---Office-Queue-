@@ -72,4 +72,17 @@ export class Database {
         const { rows } = await Database.instance.client.query(sql)
         return rows
     }  
+
+    public static async getActiveServices(): Promise<any[]> {
+        await Database.checkConnection();
+        const sql = `
+            SELECT DISTINCT service_name
+            FROM counter_service
+        `;
+        const { rows } = await Database.instance.client.query(sql);
+        console.log(rows)
+        const activeServices = rows.map(row => row.service_name)
+        return activeServices;
+    }
+
 }

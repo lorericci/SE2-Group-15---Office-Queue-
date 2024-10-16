@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import { Alert, Row } from 'react-bootstrap';
 import NavHeader from './components/navHeader/NavHeader.tsx';
 import CounterMain from './components/counter-interface/CounterMain.tsx';
+import Display from './components/main-display/displayMain.tsx';
+import NotFound from './components/notFound/NotFound.tsx';
+import ManagerMain from './components/manager-interface/ManagerMain.tsx';
 
 interface Message {
   msg: string;
@@ -54,7 +57,9 @@ function App() {
 
         <Route path="counters/:id" element={<CounterMain NextCustomer={NextCustomer} />} />
         <Route path="get-ticket" element={<GetTicketComp />} />
-        <Route path="test2" element={'Test 2'} />
+        <Route path="display" element={<Display />} />
+        <Route path="manager" element={<ManagerMain />} />
+        <Route path='*' element={<NotFound />} />
       </Route>
     </Routes>
   );

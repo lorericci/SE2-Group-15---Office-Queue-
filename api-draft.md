@@ -3,7 +3,11 @@ POST /ticket - ask the server to issue a ticket for the requested service
     Response body: { ticketId: number, //TODO: expectedWaitingTime: number }
     Response status: OK, //TODO: specify others
     
-GET /service/all - get all the services in the daily configuration that are assigned to at least one counter
+GET /services - get all the services
+    Response body: { services: string[] }
+    Response status: OK, //TODO: others
+
+GET /services/active - get all the services in the daily configuration that are assigned to at least one counter
     Response body: { services: string[] }
     Response status: OK, //TODO: others
 
@@ -32,5 +36,14 @@ GET /stats/(query parameter){daily, weekly, monthly}
             service7: 5
         }
 
-Updating the display of the current ticketId for each counter 
-requires a webSocket because the connection is initiated by the server.
+
+------------------ USER STORY 3 -----------------------
+
+GET /counters/count - return the total number of counters available
+    Response body: { count: number}
+
+
+webSocket
+PORT NUMBER: 3001
+Event name: call-customer
+Data exchanged: { ticketId, counterId }

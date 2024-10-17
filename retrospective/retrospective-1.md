@@ -29,7 +29,7 @@ sections:
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_   |    9    |        |      13h 50m    |      52h       |
+| _#0_   |    9    |        |      13h 50m    |      44h       |
 | _#1_   |    8    |    2   |      13h 30m    |      18h 40m   |
 | _#2_   |    7    |    1   |      12h 30m    |      14h       |
 | _#3_   |    6    |    1   |      14h        |      16h 50m   |
@@ -41,11 +41,16 @@ sections:
 - Hours per task average, standard deviation (estimate and actual)
 - Total estimation error ratio: sum of total hours spent / sum of total hours effort - 1
 
-    $$\frac{\sum_i spent_{task_i}}{\sum_i estimation_{task_i}} - 1$$
+    $$\frac{\sum_i spent_{task_i}}{\sum_i estimation_{task_i}} - 1$$ 
+
+    Total estimation error ratio: 0.7044
+ 
     
 - Absolute relative task estimation error: sum( abs( spent-task-i / estimation-task-i - 1))/n
 
     $$\frac{1}{n}\sum_i^n \left| \frac{spent_{task_i}}{estimation_task_i}-1 \right| $$
+
+    Absolute relative task estimation error: 0.9539
   
 ## QUALITY MEASURES 
 

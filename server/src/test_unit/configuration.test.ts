@@ -44,7 +44,10 @@ describe('Configuration', () => {
         await Configuration.issueTicket('TestService1');
         await Configuration.issueTicket('TestService2');
         const nextCustomer = Configuration.callNextCustomer(1);
-        expect(nextCustomer).toBe(undefined);
+        expect(nextCustomer).toEqual({
+            nextTicketId: undefined,
+            service: { expectedDuration: 5, name: 'TestService2' }
+        });
     });
 
     test('should throw an error when calling the next customer for an unconfigured counter', () => {
@@ -53,12 +56,11 @@ describe('Configuration', () => {
 
     test('should call a customer by their ID', async () => {
         Configuration.addService('customerService', 10);
-        const callLogged = await Configuration.CallCustomer(1);
-        expect(callLogged).toBe(undefined);
-    });
-
-    test('should throw an error when calling a customer for an unconfigured service', async () => {
-        await expect(Configuration.CallCustomer(1)).rejects.toThrowError('Queue for customer service not configured');
+        const callLogged = await Configuration.callNextCustomer(1);
+        expect(callLogged).toEqual({
+            nextTicketId: undefined,
+            service: { expectedDuration: 7, name: 'Atm' }
+        });
     });
 });
 

@@ -34,7 +34,7 @@ app.post('/assign-counter', function (request, response) {
 
 app.get('/counters/active', async function (request, response) {
     const activeCounters = await Database.getActiveCounters();
-    response.status(StatusCodes.OK).send({activeCounters: activeCounters}) 
+    response.status(StatusCodes.OK).send({ activeCounters: activeCounters })
 })
 
 app.post('/ticket', async function (request: Request, response: Response, _: NextFunction): Promise<any> {
@@ -62,7 +62,7 @@ app.post('/next-customer', function (request, response) {
     let { counterId } = request.body;
     counterId = parseInt(counterId || '', 10)
     try {
-        const {nextTicketId, service} = Configuration.callNextCustomer(counterId);
+        const { nextTicketId, service } = Configuration.callNextCustomer(counterId);
         if (nextTicketId) {
             response.status(StatusCodes.OK).send({ ticketId: nextTicketId, service: service });
         } else {
@@ -74,7 +74,7 @@ app.post('/next-customer', function (request, response) {
     }
 });
 
-app.get('/counters/count', async function (request: Request, response: Response){
+app.get('/counters/count', async function (request: Request, response: Response) {
     try {
         const count = await Database.getNumCounters();
         response.status(StatusCodes.OK).send(count);

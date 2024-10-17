@@ -55,16 +55,16 @@ sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated
-  - Total hours spent
-  - Nr of automated unit test cases 
-  - Coverage (if available)
+  - Total hours estimated: 3+3+3=9
+  - Total hours spent: 2+5+2=9
+  - Nr of automated unit test cases: 23
+  - Coverage (if available): 
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent 0
+  - Total hours estimated: 3+3+2+2=10
+  - Total hours spent: 4+2+2+1.5=12.5
 - Code review 
-  - Total hours estimated 
-  - Total hours spent 
+  - Total hours estimated: 2
+  - Total hours spent: 1.5
   
 
 

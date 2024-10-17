@@ -12,11 +12,11 @@ sections:
 
 ### Macro statistics
 
-- Number of stories committed (4) vs. done (0) 
-- Total points committed vs. done 
-- Nr of hours planned vs. spent (as a team)
+- Number of stories committed (4) vs. done (3) 
+- Total points committed (9) vs. done (4)
+- Nr of hours planned (116h 50m) vs. spent (as a team) (109h 05m)
 
-**Remember**a story is done ONLY if it fits the Definition of Done:
+**Remember** a story is done ONLY if it fits the Definition of Done:
  
 - Unit Tests passing
 - Code review completed
@@ -29,8 +29,11 @@ sections:
 
 | Story  | # Tasks | Points | Hours est. | Hours actual |
 |--------|---------|--------|------------|--------------|
-| _#0_   |         |       |            |              |
-| n      |         |        |            |              |
+| _#0_   |    9    |        |      13h 50m    |      52h       |
+| _#1_   |    8    |    2   |      13h 30m    |      18h 40m   |
+| _#2_   |    7    |    1   |      12h 30m    |      14h       |
+| _#3_   |    6    |    1   |      14h        |      16h 50m   |
+| _#4_   |    7    |    5   |      11h        |      9h        |
    
 
 > story `#0` is for technical tasks, leave out story points (not applicable in this case)
